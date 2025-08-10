@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "mineflayer": "^4.31.0",
+    "socks": "2.8.6",
     "express": "^5.1.0"
   }
 }
