@@ -4,8 +4,8 @@ const { SocksClient } = require('socks');
 async function createBot() {
   const info = await SocksClient.createConnection({
     proxy: {
-      host: '206.81.14.168',
-      port: 31966,
+      host: '8.212.151.166',
+      port: 1024,
       type: 4
     },
     command: 'connect',
@@ -27,4 +27,5 @@ async function createBot() {
 }
 
 createBot();
+
 
