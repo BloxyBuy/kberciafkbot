@@ -1,33 +1,47 @@
 const mineflayer = require('mineflayer');
-const { SocksClient } = require('socks');
+const express = require('express');
 
-async function createBot() {
-  const info = await SocksClient.createConnection({
-    proxy: {
-      host: '207.244.217.165',
-      port: 6712,
-      type: 4
-    },
-    command: 'connect',
-    destination: {
-      host: 'kbercismp1.aternos.me',
-      port: 61860
-    }
-  });
+const app = express();
+const PORT = process.env.PORT || 3000;
 
+// Simple web server for UptimeRobot
+app.get('/', (req, res) => {
+  res.send('Bot is running');
+});
+
+app.listen(PORT, () => {
+  console.log(`HTTP server listening on port ${PORT}`);
+  startBot();
+});
+
+function startBot() {
   const bot = mineflayer.createBot({
-    username: 'KBerciAFKBot',
-    auth: 'offline',
-    stream: info.socket
+    host: '185.107.194.197',     // e.g. play.example.com
+    port: 61860,           // default is 25565
+    username: 'KBerciAFKBot',  // cracked username
+    auth: 'offline'
   });
 
-  bot.on('login', () => console.log('Bot logged in through SOCKS4 proxy!'));
-  bot.on('error', err => console.error('Bot error:', err));
-  bot.on('end', () => console.log('Bot disconnected'));
+  bot.on('login', () => {
+    console.log(`Logged in as ${bot.username}`);
+    startJumpLoop(bot);
+  });
+
+  bot.on('end', () => {
+    console.log("Bot disconnected, reconnecting in 10s...");
+    setTimeout(startBot, 10000);
+  });
+
+  bot.on('error', (err) => {
+    console.error(`Bot error: ${err}`);
+  });
 }
 
-createBot();
-
-
-
-
+function startJumpLoop(bot) {
+  setInterval(() => {
+    bot.setControlState('jump', true);
+    setTimeout(() => {
+      bot.setControlState('jump', false);
+    }, 500);
+  }, 10000); // jump every 10 seconds
+}
