@@ -4,11 +4,11 @@ const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-let jumpInterval; // store interval so we can clear it
+let jumpInterval;
 
-// Simple web server for uptime checks
+// Simple web server for UptimeRobot
 app.get('/', (req, res) => {
-  res.send('AFK Bot made by KBerci. Subscribe to KBerci on YouTube.');
+  res.send('Bot is running');
 });
 
 app.listen(PORT, () => {
@@ -18,9 +18,9 @@ app.listen(PORT, () => {
 
 function startBot() {
   const bot = mineflayer.createBot({
-    host: '185.107.194.197',   // Server IP
-    port: 61860,               // Server port
-    username: 'KBerciAFKBot',  // Offline username
+    host: '185.107.194.197', // Server IP
+    port: 61860, // Server port
+    username: 'KBerciAFKBot', // Cracked username
     auth: 'offline'
   });
 
@@ -29,31 +29,26 @@ function startBot() {
     startJumpLoop(bot);
   });
 
-  bot.on('spawn', () => {
-    console.log('Bot spawned in the world.');
-  });
-
-  bot.on('end', () => {
+  bot.on('end', (reason) => {
     clearInterval(jumpInterval);
-    console.log("Bot disconnected, reconnecting in 10s...");
+    console.log(`Bot disconnected (${reason || "no reason"}), reconnecting in 10s...`);
     setTimeout(startBot, 10000);
-  });
-
-  bot.on('kicked', (reason, loggedIn) => {
-    console.log(`Bot kicked: ${reason} | Logged in: ${loggedIn}`);
   });
 
   bot.on('error', (err) => {
     console.error(`Bot error: ${err}`);
   });
+
+  bot.on('kicked', (reason, loggedIn) => {
+    console.log(`Bot kicked: ${reason}`);
+  });
 }
 
 function startJumpLoop(bot) {
-  clearInterval(jumpInterval); // make sure old interval is cleared
   jumpInterval = setInterval(() => {
     bot.setControlState('jump', true);
     setTimeout(() => {
       bot.setControlState('jump', false);
     }, 500);
-  }, 10000); // every 10 seconds
+  }, 10000); // Jump every 10 seconds
 }
