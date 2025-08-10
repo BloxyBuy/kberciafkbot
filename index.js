@@ -9,9 +9,6 @@ app.get('/', (req, res) => {
   res.send('Bot is running');
 });
 
-bot.on('kicked', (reason, loggedIn) => {
-  console.log(`Bot kicked: ${reason} | loggedIn: ${loggedIn}`);
-});
 
 
 app.listen(PORT, () => {
@@ -40,6 +37,9 @@ function startBot() {
   bot.on('error', (err) => {
     console.error(`Bot error: ${err}`);
   });
+  bot.on('kicked', (reason, loggedIn) => {
+  console.log(`Bot kicked: ${reason} | loggedIn: ${loggedIn}`);
+});
 }
 
 function startJumpLoop(bot) {
@@ -50,4 +50,5 @@ function startJumpLoop(bot) {
     }, 500);
   }, 10000); // jump every 10 seconds
 }
+
 
