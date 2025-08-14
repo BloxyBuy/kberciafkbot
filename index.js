@@ -18,8 +18,8 @@ app.listen(PORT, () => {
 
 function startBot() {
   const bot = mineflayer.createBot({
-    host: 'hypixel.net', // Server IP
-    port: 25565, // Server port
+    host: 'oribi.aternos.host', // Server IP
+    port: 61860, // Server port
     username: 'KBerciAFKBot', // Cracked username
     auth: 'offline'
   });
@@ -52,4 +52,5 @@ function startJumpLoop(bot) {
     }, 500);
   }, 10000); // Jump every 10 seconds
 }
+
 
